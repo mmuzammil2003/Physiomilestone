@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+
 urlpatterns = [
     path("Dashboard/",views.DashboardView.as_view(),name="cdashboard"),
     path("instruction/",views.ExerciseView.as_view(),name="instruction"),
@@ -8,10 +9,10 @@ urlpatterns = [
     path("uploadexecise/",views.uploadexeciseView.as_view(),name="uploadexecise"),
     
     # Consultation features
-    path("doctors/",views.DoctorListView.as_view(),name="doctor_list"),
-    path("consultation/request/<int:doctor_id>/",views.ConsultationRequestView.as_view(),name="consultation_request"),
-    path("consultations/",views.ConsultationListView.as_view(),name="consultation_list"),
-    path("consultation/<int:pk>/",views.ConsultationDetailView.as_view(),name="consultation_detail"),
+    path("doctors/",views.DoctorListView.as_view(),name="child_doctor_list"),
+    path("consultation/request/<int:doctor_id>/",views.ConsultationRequestView.as_view(),name="child_consultation_request"),
+    path("consultations/",views.ConsultationListView.as_view(),name="child_consultation_list"),
+    path("consultation/<int:pk>/",views.ConsultationDetailView.as_view(),name="child_consultation_detail"),
     
     # Video upload and processing endpoints
     path("upload-video/", views.VideoUploadView.as_view(), name="upload_video"),

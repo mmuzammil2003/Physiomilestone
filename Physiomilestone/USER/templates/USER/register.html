@@ -1,3 +1,4 @@
+<!-- 
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - PhysioMilestones</title>
-    <!-- Tailwind CSS CDN -->
+   
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +32,7 @@
     <div class="min-h-screen flex items-center justify-center">
         <div class="w-full max-w-5xl flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden m-4">
             
-            <!-- Left Panel -->
+            
             <div class="w-full md:w-1/2 bg-slate-800 p-8 sm:p-12 text-white flex flex-col justify-center items-center text-center">
                 <div class="transform transition-transform duration-500 hover:scale-105">
                     <svg class="w-32 h-32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +46,7 @@
                 <p class="mt-2 text-slate-300">Start your journey towards better developmental tracking today.</p>
             </div>
 
-            <!-- Right Panel: Registration Form -->
+
             <div class="w-full md:w-1/2 p-8 sm:p-12 form-container">
                 <h2 class="text-3xl font-bold text-slate-800 mb-4">Create an Account</h2>
                 <p class="text-slate-500 mb-8">Let's get you started!</p>
@@ -54,7 +55,7 @@
                     {% csrf_token %}
                     <div class="space-y-6">
 
-                        <!-- Username -->
+                 
                         <div>
                             <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
                             <input type="text" name="username" id="username" 
@@ -62,7 +63,7 @@
                                    placeholder="Choose a username" required>
                         </div>
 
-                        <!-- First Name -->
+                     
                         <div>
                             <label for="first_name" class="block text-sm font-medium text-slate-700">First Name</label>
                             <input type="text" name="first_name" id="first_name"
@@ -70,7 +71,7 @@
                                    placeholder="Enter your first name" required>
                         </div>
 
-                        <!-- Last Name -->
+                        
                         <div>
                             <label for="last_name" class="block text-sm font-medium text-slate-700">Last Name</label>
                             <input type="text" name="last_name" id="last_name"
@@ -78,7 +79,7 @@
                                    placeholder="Enter your last name" required>
                         </div>
 
-                        <!-- Password -->
+                        
                         <div>
                             <label for="password1" class="block text-sm font-medium text-slate-700">Password</label>
                             <input type="password" name="password1" id="password1" 
@@ -86,7 +87,7 @@
                                    placeholder="Create a secure password" required>
                         </div>
 
-                        <!-- Confirm Password -->
+                     
                         <div>
                             <label for="password2" class="block text-sm font-medium text-slate-700">Confirm Password</label>
                             <input type="password" name="password2" id="password2" 
@@ -94,7 +95,7 @@
                                    placeholder="Confirm your password" required>
                         </div>
 
-                        <!-- Role -->
+                     
                         <div>
                             <label for="role" class="block text-sm font-medium text-slate-700">I am a...</label>
                             <select name="role" id="role" 
@@ -104,7 +105,7 @@
                             </select>
                         </div>
 
-                        <!-- Age -->
+                  
                         <div>
                             <label for="age" class="block text-sm font-medium text-slate-700">Age</label>
                             <input type="number" name="age" id="age"
@@ -112,7 +113,7 @@
                                    placeholder="Enter age">
                         </div>
 
-                        <!-- Parent Name -->
+                        
                         <div>
                             <label for="parent_name" class="block text-sm font-medium text-slate-700">Parent Name</label>
                             <input type="text" name="parent_name" id="parent_name"
@@ -120,7 +121,7 @@
                                    placeholder="Enter parent's full name">
                         </div>
 
-                        <!-- Contact Number -->
+                 
                         <div>
                             <label for="contact_number" class="block text-sm font-medium text-slate-700">Contact Number</label>
                             <input type="text" name="contact_number" id="contact_number"
@@ -132,7 +133,7 @@
                                     {{ form.errors }}
                                  </div>
                             {% endif %}
-                        <!-- Submit -->
+                    
                         <div>
                             <button type="submit" 
                                     class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-transform transform hover:scale-105">
@@ -153,4 +154,193 @@
     </div>
 
 </body>
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - PhysioMilestones</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-[#f5f4ff]">
+    <div class="fixed top-[-200px] left-[-100px] w-[500px] h-[500px] bg-purple-400 rounded-full blur-[120px] opacity-40"></div>
+    <div class="fixed bottom-[-200px] right-[-100px] w-[500px] h-[500px] bg-pink-400 rounded-full blur-[120px] opacity-40"></div>
+
+    <div class="min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+
+            <!-- Left Section -->
+            <div class="bg-slate-800 text-white p-10 flex flex-col justify-center items-center">
+                <a href="{% url 'home' %}" class="text-4xl font-bold mb-4 inline-block">
+                <svg class="w-28 h-28 mb-4 hover:scale-105 transition-transform duration-300" 
+                     viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+                </a>
+
+                <h1 class="text-3xl font-bold">Join PhysioMilestones</h1>
+                <p class="text-gray-300 mt-2 text-center">
+                    Start your journey towards better developmental tracking today.
+                </p>
+            </div>
+
+            <!-- Right Section (Form) -->
+            <div class="p-10 fade-in">
+
+                <h2 class="text-3xl font-bold text-gray-800">Create an Account</h2>
+                <p class="text-gray-500 mt-1 mb-8">Let’s get you started!</p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="space-y-6">
+
+                        <!-- Username -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Username</label>
+                            <input type="text" name="username" value="{{ request.POST.username }}"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Choose a username" required>
+                        </div>
+
+                        <!-- First Name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input type="text" name="first_name" value="{{ request.POST.first_name }}"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Enter your first name" required>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input type="text" name="last_name" value="{{ request.POST.last_name }}"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Enter your last name" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" name="password1"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Create a strong password" required>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                            <input type="password" name="password2"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Confirm your password" required>
+                        </div>
+
+                        <!-- Role -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">I am a...</label>
+                            <select name="role" id="roleSelect"
+                            class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg">
+                    
+                        <option value="child" 
+                            {% if request.POST.role == "child" %}selected{% endif %}>
+                            Parent / Child
+                        </option>
+                    
+                        <option value="doctor" 
+                            {% if request.POST.role == "doctor" %}selected{% endif %}>
+                            Doctor
+                        </option>
+                    
+                    </select>
+                        </div>
+
+                        <!-- Age (Hidden for Doctors) -->
+                        <div id="ageField">
+                            <label class="block text-sm font-medium text-gray-700">Age</label>
+                            <input type="number" name="age" value="{{ request.POST.age }}"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Enter age">
+                        </div>
+
+                        <!-- Parent Name (Hidden for Doctors) -->
+                        <div id="parentField">
+                            <label class="block text-sm font-medium text-gray-700">Parent Name</label>
+                            <input type="text" name="parent_name" value="{{ request.POST.parent_name }}"
+                                class="mt-1 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg"
+                                placeholder="Enter parent's full name">
+                        </div>
+
+                        {% if form.errors %}
+                        <div class="text-red-500 text-sm">
+                            {{ form.errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Submit Button -->
+                        <button type="submit"
+                            class="w-full py-3 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600 transition-transform hover:scale-105">
+                            Register
+                        </button>
+
+                    </div>
+                </form>
+
+                <p class="mt-8 text-center text-sm text-gray-500">
+                    Already have an account?
+                    <a href="{% url 'login' %}" class="text-amber-600 hover:text-amber-500 font-semibold">
+                        Login here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role-Based Logic -->
+    <script>
+        function updateRoleFields() {
+            const role = document.getElementById("roleSelect").value;
+            const ageField = document.getElementById("ageField");
+            const parentField = document.getElementById("parentField");
+
+            if (role === "doctor") {
+                ageField.style.display = "none";
+                parentField.style.display = "none";
+            } else {
+                ageField.style.display = "block";
+                parentField.style.display = "block";
+            }
+        }
+
+        document.getElementById("roleSelect").addEventListener("change", updateRoleFields);
+
+        // Run on page load
+        updateRoleFields();
+    </script>
+
+</body>
 </html>
+
+

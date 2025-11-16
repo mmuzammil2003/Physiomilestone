@@ -4,209 +4,166 @@
 {% block title %}Consultation Details{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="card-title">
-                            <i class="fas fa-comments"></i> Consultation Details
-                        </h4>
-                        <a href="{% url 'consultation_list' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-arrow-left"></i> Back to Consultations
-                        </a>
-                    </div>
+
+<div class="max-w-5xl mx-auto px-6 py-10">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-slate-800 flex items-center gap-2">
+            <i class="fas fa-comments text-amber-500"></i>
+            Consultation Details
+        </h1>
+
+        <a href="{% url 'child_consultation_list' %}" 
+           class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition font-medium">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <!-- Doctor Info Card -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 mb-6">
+
+        <div class="flex flex-col md:flex-row md:justify-between">
+
+            <!-- Left: Doctor avatar + info -->
+            <div class="flex items-center gap-4">
+                <div class="h-16 w-16 bg-amber-500 text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                    {{ consultation.doctor.first_name|first }}{{ consultation.doctor.last_name|first }}
                 </div>
-                <div class="card-body">
-                    <!-- Doctor Info -->
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-lg bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3">
-                                    <span class="text-white font-weight-bold" style="font-size: 2rem;">
-                                        {{ consultation.doctor.first_name|first }}{{ consultation.doctor.last_name|first }}
-                                    </span>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Dr. {{ consultation.doctor.first_name }} {{ consultation.doctor.last_name }}</h5>
-                                    <p class="text-muted mb-0">{{ consultation.doctor.email }}</p>
-                                    <small class="text-muted">Contact: {{ consultation.doctor.contact_number|default:"N/A" }}</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-md-right">
-                            <div class="mb-2">
-                                <strong>Status:</strong>
-                                {% if consultation.status == 'pending' %}
-                                    <span class="badge badge-warning">Pending</span>
-                                {% elif consultation.status == 'accepted' %}
-                                    <span class="badge badge-info">Accepted</span>
-                                {% elif consultation.status == 'completed' %}
-                                    <span class="badge badge-success">Completed</span>
-                                {% else %}
-                                    <span class="badge badge-secondary">{{ consultation.status|title }}</span>
-                                {% endif %}
-                            </div>
-                            <div>
-                                <small class="text-muted">
-                                    Requested: {{ consultation.requested_at|date:"F j, Y, g:i a" }}
-                                </small>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Consultation Details -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Subject</h5>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-0">{{ consultation.subject }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Your Message</h5>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-0">{{ consultation.message }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {% if consultation.doctor_response %}
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header bg-info text-white">
-                                    <h5 class="mb-0">
-                                        <i class="fas fa-reply"></i> Doctor's Response
-                                        {% if consultation.accepted_at %}
-                                            <small class="float-right">
-                                                {{ consultation.accepted_at|date:"F j, Y, g:i a" }}
-                                            </small>
-                                        {% endif %}
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-0">{{ consultation.doctor_response }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    <!-- Timeline -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h5>Timeline</h5>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <div class="timeline-marker bg-primary"></div>
-                                    <div class="timeline-content">
-                                        <h6>Consultation Requested</h6>
-                                        <p class="text-muted">{{ consultation.requested_at|date:"F j, Y, g:i a" }}</p>
-                                    </div>
-                                </div>
-                                
-                                {% if consultation.accepted_at %}
-                                <div class="timeline-item">
-                                    <div class="timeline-marker bg-success"></div>
-                                    <div class="timeline-content">
-                                        <h6>Consultation Accepted</h6>
-                                        <p class="text-muted">{{ consultation.accepted_at|date:"F j, Y, g:i a" }}</p>
-                                    </div>
-                                </div>
-                                {% endif %}
-                                
-                                {% if consultation.completed_at %}
-                                <div class="timeline-item">
-                                    <div class="timeline-marker bg-info"></div>
-                                    <div class="timeline-content">
-                                        <h6>Consultation Completed</h6>
-                                        <p class="text-muted">{{ consultation.completed_at|date:"F j, Y, g:i a" }}</p>
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="row mt-4">
-                        <div class="col-12 text-center">
-                            <a href="{% url 'consultation_list' %}" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Back to Consultations
-                            </a>
-                            {% if consultation.status == 'pending' %}
-                                <button class="btn btn-warning" disabled>
-                                    <i class="fas fa-clock"></i> Waiting for Response
-                                </button>
-                            {% elif consultation.status == 'accepted' %}
-                                <span class="badge badge-success">Consultation in Progress</span>
-                            {% elif consultation.status == 'completed' %}
-                                <span class="badge badge-info">Consultation Completed</span>
-                            {% endif %}
-                        </div>
-                    </div>
+                <div>
+                    <p class="text-lg font-semibold text-slate-800">
+                        Dr. {{ consultation.doctor.first_name }} {{ consultation.doctor.last_name }}
+                    </p>
+                    <p class="text-sm text-gray-500">{{ consultation.doctor.email }}</p>
+                    <p class="text-sm text-gray-500">Contact: {{ consultation.doctor.contact_number|default:"N/A" }}</p>
                 </div>
             </div>
+
+            <!-- Right: Status + date -->
+            <div class="mt-4 md:mt-0 text-right">
+
+                <p class="font-semibold text-slate-700">Status:</p>
+
+                {% if consultation.status == 'pending' %}
+                    <span class="px-3 py-1 text-sm rounded-full bg-yellow-200 text-yellow-800">Pending</span>
+                {% elif consultation.status == 'accepted' %}
+                    <span class="px-3 py-1 text-sm rounded-full bg-blue-200 text-blue-800">Accepted</span>
+                {% elif consultation.status == 'completed' %}
+                    <span class="px-3 py-1 text-sm rounded-full bg-green-200 text-green-800">Completed</span>
+                {% endif %}
+
+                <p class="text-sm text-gray-500 mt-2">
+                    Requested: {{ consultation.requested_at|date:"F j, Y, g:i a" }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Subject -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 mb-6">
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Subject</h2>
+        <p class="text-gray-700">{{ consultation.subject }}</p>
+    </div>
+
+    <!-- Patient Message -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 mb-6">
+        <h2 class="text-xl font-bold text-slate-800 mb-2">Your Message</h2>
+        <p class="text-gray-700 leading-relaxed">
+            {{ consultation.message }}
+        </p>
+    </div>
+
+    <!-- Doctor Response -->
+    {% if consultation.doctor_response %}
+    <div class="bg-blue-50 border border-blue-200 shadow-lg rounded-2xl p-6 mb-6">
+
+        <div class="flex justify-between">
+            <h2 class="text-xl font-bold text-blue-900 flex items-center gap-2">
+                <i class="fas fa-reply"></i> Doctor's Response
+            </h2>
+
+            {% if consultation.accepted_at %}
+            <span class="text-sm text-gray-500">
+                {{ consultation.accepted_at|date:"F j, Y, g:i a" }}
+            </span>
+            {% endif %}
+        </div>
+
+        <p class="text-gray-700 mt-3 leading-relaxed">
+            {{ consultation.doctor_response }}
+        </p>
+
+    </div>
+    {% endif %}
+
+    <!-- Timeline -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 mb-8">
+        <h2 class="text-xl font-bold text-slate-800 mb-4">Timeline</h2>
+
+        <div class="relative pl-6 border-l-2 border-slate-300 space-y-6">
+
+            <!-- Requested -->
+            <div class="relative">
+                <div class="h-4 w-4 bg-amber-500 rounded-full absolute -left-[11px] top-1.5"></div>
+                <h3 class="font-semibold text-slate-800">Consultation Requested</h3>
+                <p class="text-gray-500 text-sm">
+                    {{ consultation.requested_at|date:"F j, Y, g:i a" }}
+                </p>
+            </div>
+
+            {% if consultation.accepted_at %}
+            <div class="relative">
+                <div class="h-4 w-4 bg-green-500 rounded-full absolute -left-[11px] top-1.5"></div>
+                <h3 class="font-semibold text-slate-800">Consultation Accepted</h3>
+                <p class="text-gray-500 text-sm">
+                    {{ consultation.accepted_at|date:"F j, Y, g:i a" }}
+                </p>
+            </div>
+            {% endif %}
+
+            {% if consultation.completed_at %}
+            <div class="relative">
+                <div class="h-4 w-4 bg-blue-500 rounded-full absolute -left-[11px] top-1.5"></div>
+                <h3 class="font-semibold text-slate-800">Consultation Completed</h3>
+                <p class="text-gray-500 text-sm">
+                    {{ consultation.completed_at|date:"F j, Y, g:i a" }}
+                </p>
+            </div>
+            {% endif %}
+
         </div>
     </div>
+
+    <!-- Footer Buttons -->
+    <div class="flex justify-center gap-4">
+
+        <a href="{% url 'child_consultation_list' %}"
+           class="px-5 py-3 bg-slate-200 text-slate-700 rounded-xl font-semibold hover:bg-slate-300 transition">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+
+        {% if consultation.status == 'pending' %}
+            <span class="px-5 py-3 bg-yellow-200 text-yellow-800 rounded-xl font-semibold">
+                <i class="fas fa-clock"></i> Waiting for Response
+            </span>
+
+        {% elif consultation.status == 'accepted' %}
+            <span class="px-5 py-3 bg-green-200 text-green-800 rounded-xl font-semibold">
+                <i class="fas fa-check-circle"></i> Consultation In Progress
+            </span>
+
+        {% elif consultation.status == 'completed' %}
+            <span class="px-5 py-3 bg-blue-200 text-blue-800 rounded-xl font-semibold">
+                <i class="fas fa-check"></i> Consultation Completed
+            </span>
+        {% endif %}
+
+    </div>
+
 </div>
 
-<style>
-.timeline {
-    position: relative;
-    padding-left: 30px;
-}
-
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: #e9ecef;
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: -22px;
-    top: 5px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 2px #e9ecef;
-}
-
-.timeline-content {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    margin-left: 10px;
-}
-
-.timeline-content h6 {
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-</style>
 {% endblock %}
-

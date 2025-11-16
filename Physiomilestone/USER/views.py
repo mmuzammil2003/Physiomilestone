@@ -8,6 +8,9 @@ from django.contrib import messages
 User = get_user_model()  # get your CustomUser model
 from .forms import CustomusercreationForm
 
+def home(request):
+    return render(request, "USER/home.html")
+
 def register_view(request):
     if request.method == "POST":
         form=CustomusercreationForm(request.POST)

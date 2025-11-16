@@ -4,161 +4,154 @@
 {% block title %}My Consultations{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">
-                        <i class="fas fa-comments"></i> My Consultations
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <!-- Status Summary -->
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="card bg-warning text-white">
-                                <div class="card-body text-center">
-                                    <h5>Pending</h5>
-                                    <h3>{{ pending_count }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-info text-white">
-                                <div class="card-body text-center">
-                                    <h5>Accepted</h5>
-                                    <h3>{{ accepted_count }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-success text-white">
-                                <div class="card-body text-center">
-                                    <h5>Completed</h5>
-                                    <h3>{{ completed_count }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-primary text-white">
-                                <div class="card-body text-center">
-                                    <h5>Total</h5>
-                                    <h3>{{ consultations|length }}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    {% if consultations %}
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Doctor</th>
-                                        <th>Subject</th>
-                                        <th>Message</th>
-                                        <th>Status</th>
-                                        <th>Requested</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for consultation in consultations %}
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3">
-                                                    <span class="text-white font-weight-bold">
-                                                        {{ consultation.doctor.first_name|first }}{{ consultation.doctor.last_name|first }}
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-0">Dr. {{ consultation.doctor.first_name }} {{ consultation.doctor.last_name }}</h6>
-                                                    <small class="text-muted">{{ consultation.doctor.email }}</small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <strong>{{ consultation.subject }}</strong>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0">{{ consultation.message|truncatewords:20 }}</p>
-                                        </td>
-                                        <td>
-                                            {% if consultation.status == 'pending' %}
-                                                <span class="badge badge-warning">Pending</span>
-                                            {% elif consultation.status == 'accepted' %}
-                                                <span class="badge badge-info">Accepted</span>
-                                            {% elif consultation.status == 'completed' %}
-                                                <span class="badge badge-success">Completed</span>
-                                            {% else %}
-                                                <span class="badge badge-secondary">{{ consultation.status|title }}</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <small class="text-muted">
-                                                {{ consultation.requested_at|timesince }} ago
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{% url 'consultation_detail' consultation.pk %}" 
-                                                   class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-eye"></i> View
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <!-- Pagination -->
-                        {% if is_paginated %}
-                        <nav aria-label="Consultation pagination">
-                            <ul class="pagination justify-content-center">
-                                {% if page_obj.has_previous %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page=1">&laquo; First</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                                    </li>
-                                {% endif %}
-                                
-                                <li class="page-item active">
-                                    <span class="page-link">
-                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                                    </span>
-                                </li>
-                                
-                                {% if page_obj.has_next %}
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                        {% endif %}
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">No consultations found</h5>
-                            <p class="text-muted">You haven't requested any consultations yet.</p>
-                            <a href="{% url 'doctor_list' %}" class="btn btn-primary">
-                                <i class="fas fa-user-md"></i> Find a Doctor
+<div class="max-w-6xl mx-auto px-6 py-8">
+
+    <h1 class="text-3xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+        <i class="fas fa-comments text-amber-500"></i> My Consultations
+    </h1>
+
+    <!-- Status Summary -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+
+        <div class="bg-yellow-100 text-yellow-800 rounded-xl p-5 shadow">
+            <h5 class="font-semibold">Pending</h5>
+            <p class="text-3xl font-bold">{{ pending_count }}</p>
+        </div>
+
+        <div class="bg-blue-100 text-blue-800 rounded-xl p-5 shadow">
+            <h5 class="font-semibold">Accepted</h5>
+            <p class="text-3xl font-bold">{{ accepted_count }}</p>
+        </div>
+
+        <div class="bg-green-100 text-green-800 rounded-xl p-5 shadow">
+            <h5 class="font-semibold">Completed</h5>
+            <p class="text-3xl font-bold">{{ completed_count }}</p>
+        </div>
+
+        <div class="bg-purple-100 text-purple-800 rounded-xl p-5 shadow">
+            <h5 class="font-semibold">Total</h5>
+            <p class="text-3xl font-bold">{{ consultations|length }}</p>
+        </div>
+
+    </div>
+
+    {% if consultations %}
+
+    <!-- Consultation List Table -->
+    <div class="bg-white shadow-xl rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left">
+                <thead class="bg-slate-800 text-white">
+                    <tr>
+                        <th class="py-3 px-6">Doctor</th>
+                        <th class="py-3 px-6">Subject</th>
+                        <th class="py-3 px-6">Message</th>
+                        <th class="py-3 px-6">Status</th>
+                        <th class="py-3 px-6">Requested</th>
+                        <th class="py-3 px-6">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-200">
+
+                    {% for consultation in consultations %}
+                    <tr class="hover:bg-gray-50 transition">
+
+                        <!-- Doctor Details -->
+                        <td class="py-4 px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="h-12 w-12 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                                    {{ consultation.doctor.first_name|first }}{{ consultation.doctor.last_name|first }}
+                                </div>
+                                <div>
+                                    <p class="font-semibold">Dr. {{ consultation.doctor.first_name }} {{ consultation.doctor.last_name }}</p>
+                                    <p class="text-sm text-gray-500">{{ consultation.doctor.email }}</p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Subject -->
+                        <td class="py-4 px-6 font-semibold">
+                            {{ consultation.subject }}
+                        </td>
+
+                        <!-- Message -->
+                        <td class="py-4 px-6 text-gray-600">
+                            {{ consultation.message|truncatewords:20 }}
+                        </td>
+
+                        <!-- Status -->
+                        <td class="py-4 px-6">
+                            {% if consultation.status == 'pending' %}
+                                <span class="px-3 py-1 rounded-full text-sm bg-yellow-200 text-yellow-800">Pending</span>
+                            {% elif consultation.status == 'accepted' %}
+                                <span class="px-3 py-1 rounded-full text-sm bg-blue-200 text-blue-800">Accepted</span>
+                            {% elif consultation.status == 'completed' %}
+                                <span class="px-3 py-1 rounded-full text-sm bg-green-200 text-green-800">Completed</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Date -->
+                        <td class="py-4 px-6 text-sm text-gray-500">
+                            {{ consultation.requested_at|timesince }} ago
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="py-4 px-6">
+                            <a href="{% url 'child_consultation_detail' consultation.pk %}"
+                               class="px-4 py-2 text-sm bg-amber-500 text-white rounded-lg shadow hover:bg-amber-600 transition">
+                                <i class="fas fa-eye"></i> View
                             </a>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
         </div>
     </div>
-</div>
-{% endblock %}
 
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="mt-6 flex justify-center">
+        <div class="flex items-center gap-2">
+
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">&laquo;</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Prev</a>
+            {% endif %}
+
+            <span class="px-4 py-2 bg-amber-500 text-white rounded-lg shadow">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">&raquo;</a>
+            {% endif %}
+
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+
+    <!-- No Consultations -->
+    <div class="text-center py-16">
+        <i class="fas fa-comments text-gray-400 text-5xl mb-4"></i>
+        <h3 class="text-2xl font-semibold text-gray-700 mb-2">No Consultations Found</h3>
+        <p class="text-gray-500 mb-6">You haven't requested any consultations yet.</p>
+
+        <a href="{% url 'child_doctor_list' %}"
+           class="px-5 py-3 bg-amber-500 text-white rounded-lg font-medium shadow hover:bg-amber-600 transition">
+            <i class="fas fa-user-md"></i> Find a Doctor
+        </a>
+    </div>
+
+    {% endif %}
+</div>
+
+{% endblock %}

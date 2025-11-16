@@ -4,181 +4,235 @@
 {% block title %}Exercise Instructions - PhysioMilestones{% endblock %}
 
 {% block content %}
-<main class="w-full max-w-4xl bg-white p-8 rounded-2xl shadow-md mx-auto">
+<main class="w-full max-w-6xl mx-auto">
     {% if assigned_exercise %}
-    <!-- Header -->
-    <header class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-slate-900">
-            How to do {{ assigned_exercise.Exercise.name }}
-        </h1>
-        <p class="text-slate-500 mt-1">
-            Watch the video and read the instructions carefully before you begin.
-        </p>
-    </header>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        
+        <!-- ========================================================= -->
+        <!-- LEFT PANEL (Instructions) -->
+        <!-- ========================================================= -->
+        <div class="lg:col-span-3">
+            <!-- Header -->
+            <header class="mb-6">
+                <div class="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM6.636 6.079a.75.75 0 011.06 0l.07.071a.75.75 0 010 1.06L6.079 9.897a.75.75 0 01-1.06 0l-.071-.07a.75.75 0 010-1.06l1.688-1.688zm5.656 5.656a.75.75 0 011.06 0l.07.071a.75.75 0 010 1.06l-1.687 1.688a.75.75 0 01-1.06 0l-.071-.07a.75.75 0 010-1.06l1.688-1.688zM9.25 4.5a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zm0 9a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zm4.329-6.421a.75.75 0 011.06 0l.07.071a.75.75 0 010 1.06l-1.687 1.688a.75.75 0 01-1.06 0l-.071-.07a.75.75 0 010-1.06l1.688-1.688zm-5.656 5.656a.75.75 0 011.06 0l.07.071a.75.75 0 010 1.06l-1.687 1.688a.75.75 0 01-1.06 0l-.071-.07a.75.75 0 010-1.06l1.688-1.688z" clip-rule="evenodd" />
+                    </svg>
+                    <h1 class="text-3xl font-bold text-gray-900">
+                        How to do {{ assigned_exercise.Exercise.name }}
+                    </h1>
+                </div>
+            </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <!-- Left Panel: YouTube Video Embed -->
-        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
-            {% if assigned_exercise.Exercise.youtube_id %}
-                <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src="https://www.youtube.com/embed/{{ assigned_exercise.Exercise.youtube_id }}" 
-                    title="Exercise Video" 
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            {% else %}
-                <p class="text-center text-slate-500">No video available.</p>
-            {% endif %}
+            <!-- YouTube Video Embed -->
+            <div class="aspect-video rounded-xl overflow-hidden shadow-lg mb-6">
+                {% if assigned_exercise.Exercise.youtube_id %}
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/{{ assigned_exercise.Exercise.youtube_id |safe}}" 
+                        title="Exercise Video" 
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                {% else %}
+                    <div class="w-full h-full bg-gray-100 flex items-center justify-center rounded-xl">
+                        <p class="text-center text-gray-500">No video available.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Instructions Text -->
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Instructions</h2>
+                <p class="text-gray-600 leading-relaxed">{{ assigned_exercise.instruction }}</p>
+            </div>
         </div>
 
-        <!-- Right Panel: Instructions & Action Button -->
-        <div class="space-y-6">
-            <div>
-                <h2 class="text-xl font-bold mb-2">Instructions</h2>
-                <p class="text-slate-600">{{ assigned_exercise.instruction }}</p>
-                <ul class="list-disc list-inside space-y-2 text-slate-600">
-                    <li>Reps: {{ assigned_exercise.reps }}</li>
-                    <li>Sets: {{ assigned_exercise.sets }}</li>
-                </ul>
-            </div>
-            <div class="text-center">
-                <button id="beginExerciseBtn" 
-                   class="w-full inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105 text-lg">
-                    Let's Begin!
-                </button>
+        <!-- ========================================================= -->
+        <!-- RIGHT PANEL (Dynamic Action Panel) -->
+        <!-- ========================================================= -->
+        <div class="lg:col-span-2">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg sticky top-24">
+                
+                <!-- STATE 1: START -->
+                <div id="state-start">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Goal</h2>
+                    <div class="space-y-4 mb-6">
+                        <div class="bg-purple-50 p-4 rounded-lg flex items-center justify-between">
+                            <span class="text-lg font-medium text-purple-800">Reps</span>
+                            <span class="text-2xl font-bold text-purple-600">{{ assigned_exercise.reps }}</span>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg flex items-center justify-between">
+                            <span class="text-lg font-medium text-purple-800">Sets</span>
+                            <span class="text-2xl font-bold text-purple-600">{{ assigned_exercise.sets }}</span>
+                        </div>
+                    </div>
+                    <button id="beginExerciseBtn" 
+                       class="w-full inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-lg shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/30 transition-all transform hover:scale-105 text-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8.002v3.996a1 1 0 001.555.832l3.001-1.996a1 1 0 000-1.664l-3.001-1.996z" clip-rule="evenodd" />
+                        </svg>
+                        Let's Begin!
+                    </button>
+                </div>
+                
+                <!-- STATE 2: UPLOAD -->
+                <div id="state-upload" class="hidden">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Show Your Moves!</h3>
+                        <p class="text-gray-600 mb-6">
+                            Record yourself performing the exercise and upload the video for analysis.
+                        </p>
+                    </div>
+                    
+                    <form id="videoUploadForm" enctype="multipart/form-data" class="space-y-4">
+                        {% csrf_token %}
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-500 transition-colors">
+                            <input type="file" id="videoFile" name="video" accept="video/*" class="hidden" required>
+                            <label for="videoFile" class="cursor-pointer">
+                                <div class="text-purple-500 mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <p class="text-sm font-semibold text-gray-700">Drag & Drop or Click to Upload</p>
+                                <p class="text-xs text-gray-500 mt-1">MP4, AVI, MOV, WMV (max 100MB)</p>
+                            </label>
+                        </div>
+                        
+                        <div id="fileInfo" class="hidden text-sm text-gray-600 text-left">
+                            <p>Selected file: <span id="fileName" class="font-medium"></span></p>
+                            <p>Size: <span id="fileSize" class="font-medium"></span></p>
+                        </div>
+                        
+                        <div id="errorMessage" class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                            <p id="errorText"></p>
+                        </div>
+                        
+                        <div class="flex space-x-3 pt-2">
+                            <button type="button" id="cancelUpload" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-lg transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" id="uploadBtn" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg shadow-md shadow-purple-500/20 transition-colors">
+                                Upload Video!
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- STATE 3: PROCESSING -->
+                <div id="state-processing" class="hidden">
+                    <div class="text-center py-12">
+                        <div class="flex items-center justify-center space-x-2">
+                            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-500"></div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-6">Analyzing your video...</h3>
+                        <p class="text-gray-500 mt-2">This might take a moment, great work so far!</p>
+                    </div>
+                </div>
+
+                <!-- STATE 4: RESULTS -->
+                <div id="state-results" class="hidden">
+                    <div class="text-center">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-6">Great Job!</h3>
+                        
+                        <div id="resultsContent" class="space-y-4">
+                            <!-- JS will populate this -->
+                        </div>
+                        
+                        <div class="flex space-x-3 mt-8">
+                            <button id="tryAgainBtn" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-lg transition-colors">
+                                Try Again
+                            </button>
+                            <a id="viewDetailedResults" href="#" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg shadow-md shadow-purple-500/20 transition-colors text-center">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     {% else %}
-        <p class="text-center text-slate-500">No exercise assigned yet.</p>
+        <p class="text-center text-gray-500">No exercise assigned yet.</p>
     {% endif %}
 </main>
 
-<footer class="mt-8 text-center">
-    <a href="{% url 'cdashboard' %}" class="text-slate-500 hover:text-slate-700 font-semibold transition-colors">
+<footer class="mt-8 text-center pb-12">
+    <a href="{% url 'cdashboard' %}" class="text-gray-500 hover:text-gray-700 font-semibold transition-colors">
         &larr; Go back to Dashboard
     </a>
 </footer>
 
-<!-- Video Upload Modal -->
-<div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-        <div class="text-center">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Upload Your Exercise Video</h3>
-            <p class="text-gray-600 mb-6">
-                Record yourself performing the exercise and upload the video for analysis.
-            </p>
-            
-            <!-- Upload Form -->
-            <form id="videoUploadForm" enctype="multipart/form-data" class="space-y-4">
-                {% csrf_token %}
-                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                    <input type="file" id="videoFile" name="video" accept="video/*" class="hidden" required>
-                    <label for="videoFile" class="cursor-pointer">
-                        <div class="text-gray-400 mb-2">
-                            <svg class="mx-auto h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <p class="text-sm text-gray-600">Click to select video file</p>
-                        <p class="text-xs text-gray-500 mt-1">MP4, AVI, MOV, WMV (max 100MB)</p>
-                    </label>
-                </div>
-                
-                <div id="fileInfo" class="hidden text-sm text-gray-600">
-                    <p>Selected file: <span id="fileName"></span></p>
-                    <p>Size: <span id="fileSize"></span></p>
-                </div>
-                
-                <div class="flex space-x-3">
-                    <button type="button" id="cancelUpload" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition-colors">
-                        Cancel
-                    </button>
-                    <button type="submit" id="uploadBtn" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition-colors">
-                        Upload & Analyze
-                    </button>
-                </div>
-            </form>
-            
-            <!-- Processing Status -->
-            <div id="processingStatus" class="hidden mt-4">
-                <div class="flex items-center justify-center space-x-2">
-                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-amber-500"></div>
-                    <p class="text-gray-600">Processing your video...</p>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">This may take a few minutes</p>
-            </div>
-            
-            <!-- Error Message -->
-            <div id="errorMessage" class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                <p id="errorText"></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Results Modal -->
-<div id="resultsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-8 max-w-lg w-full mx-4">
-        <div class="text-center">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Exercise Analysis Results</h3>
-            
-            <div id="resultsContent" class="space-y-4">
-                <!-- Results will be populated here -->
-            </div>
-            
-            <div class="flex space-x-3 mt-6">
-                <button id="closeResults" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition-colors">
-                    Close
-                </button>
-                <a id="viewDetailedResults" href="#" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition-colors">
-                    View Details
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Modals have been removed, logic is now in the panels -->
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('uploadModal');
-    const resultsModal = document.getElementById('resultsModal');
+    // State Panels
+    const stateStart = document.getElementById('state-start');
+    const stateUpload = document.getElementById('state-upload');
+    const stateProcessing = document.getElementById('state-processing');
+    const stateResults = document.getElementById('state-results');
+
+    // Buttons
     const beginBtn = document.getElementById('beginExerciseBtn');
     const cancelBtn = document.getElementById('cancelUpload');
-    const closeResultsBtn = document.getElementById('closeResults');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+
+    // Uploader elements
     const uploadForm = document.getElementById('videoUploadForm');
     const videoFile = document.getElementById('videoFile');
     const fileInfo = document.getElementById('fileInfo');
     const fileName = document.getElementById('fileName');
     const fileSize = document.getElementById('fileSize');
-    const processingStatus = document.getElementById('processingStatus');
     const errorMessage = document.getElementById('errorMessage');
     const errorText = document.getElementById('errorText');
+    const uploadBtn = document.getElementById('uploadBtn');
+
+    // Results elements
     const resultsContent = document.getElementById('resultsContent');
     const viewDetailedResults = document.getElementById('viewDetailedResults');
     
     let currentVideoId = null;
+
+    // --- State Management ---
+    function showState(stateToShow) {
+        stateStart.classList.add('hidden');
+        stateUpload.classList.add('hidden');
+        stateProcessing.classList.add('hidden');
+        stateResults.classList.add('hidden');
+
+        if (stateToShow === 'start') {
+            stateStart.classList.remove('hidden');
+        } else if (stateToShow === 'upload') {
+            stateUpload.classList.remove('hidden');
+        } else if (stateToShow === 'processing') {
+            stateProcessing.classList.remove('hidden');
+        } else if (stateToShow === 'results') {
+            stateResults.classList.remove('hidden');
+        }
+    }
     
-    // Show upload modal
-    beginBtn.addEventListener('click', function() {
-        modal.classList.remove('hidden');
-    });
+    // --- Event Listeners ---
+    if (beginBtn) {
+        beginBtn.addEventListener('click', function() {
+            showState('upload');
+        });
+    }
     
-    // Hide upload modal
     cancelBtn.addEventListener('click', function() {
-        modal.classList.add('hidden');
+        showState('start');
         resetForm();
     });
     
-    // Close results modal
-    closeResultsBtn.addEventListener('click', function() {
-        resultsModal.classList.add('hidden');
+    tryAgainBtn.addEventListener('click', function() {
+        showState('start');
+        resetForm();
     });
     
-    // File selection
     videoFile.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
@@ -190,18 +244,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Form submission
     uploadForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
         const formData = new FormData(this);
         
-        // Show processing status
-        processingStatus.classList.remove('hidden');
+        showState('processing');
         errorMessage.classList.add('hidden');
-        
-        // Disable upload button
-        document.getElementById('uploadBtn').disabled = true;
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = 'Uploading...';
         
         fetch('{% url "upload_video" %}', {
             method: 'POST',
@@ -224,6 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // --- Helper Functions ---
     function checkVideoStatus(videoId) {
         fetch(`{% url "video_status" video_id=0 %}`.replace('0', videoId))
         .then(response => response.json())
@@ -234,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (data.status === 'failed') {
                     showError(data.error || 'Video processing failed.');
                 } else {
-                    // Still processing, check again in 2 seconds
                     setTimeout(() => checkVideoStatus(videoId), 2000);
                 }
             } else {
@@ -247,56 +298,71 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showResults(results, videoId) {
-        processingStatus.classList.add('hidden');
-        modal.classList.add('hidden');
-        
-        const accuracyColor = results.overall_score >= 80 ? 'text-green-600' : 
-                             results.overall_score >= 60 ? 'text-yellow-600' : 'text-red-600';
+        const score = results.overall_score || 0;
+        const accuracyColor = score >= 80 ? 'text-green-600' : 
+                             score >= 60 ? 'text-orange-500' : 'text-red-500';
         
         resultsContent.innerHTML = `
-            <div class="grid grid-cols-2 gap-4 text-left">
-                <div class="bg-gray-50 p-4 rounded">
-                    <h4 class="font-semibold text-gray-700">Exercise Type</h4>
-                    <p class="text-gray-900">${results.exercise_type || 'Unknown'}</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded">
-                    <h4 class="font-semibold text-gray-700">Overall Score</h4>
-                    <p class="${accuracyColor} font-bold">${results.overall_score}%</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded">
-                    <h4 class="font-semibold text-gray-700">Reps Completed</h4>
-                    <p class="text-gray-900">${results.total_reps} / ${results.target_reps}</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded">
-                    <h4 class="font-semibold text-gray-700">Sets Completed</h4>
-                    <p class="text-gray-900">${results.total_sets} / ${results.target_sets}</p>
+            <div class="flex justify-center items-center">
+                <div class="relative w-40 h-40">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <circle class="text-gray-200" stroke-width="10" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+                        <circle class="transform -rotate-90 origin-center ${accuracyColor}"
+                            stroke-width="10"
+                            stroke-dasharray="${Math.PI * 90}"
+                            stroke-dashoffset="${Math.PI * 90 * (1 - score / 100)}"
+                            stroke="currentColor"
+                            fill="transparent"
+                            r="45" cx="50" cy="50"
+                        />
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="text-4xl font-bold ${accuracyColor}">${score}%</span>
+                        <span class="text-sm font-medium text-gray-500">Overall Score</span>
+                    </div>
                 </div>
             </div>
-            <div class="mt-4 text-sm text-gray-600">
-                <p>Reps Accuracy: ${results.reps_accuracy}%</p>
-                <p>Sets Accuracy: ${results.sets_accuracy}%</p>
-                <p>Pose Accuracy: ${results.accuracy_score}%</p>
+            
+            <div class="grid grid-cols-2 gap-4 text-left mt-6">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-600">Exercise Type</h4>
+                    <p class="text-lg font-bold text-gray-900">${results.exercise_type || 'Unknown'}</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-600">Reps Completed</h4>
+                    <p class="text-lg font-bold text-gray-900">${results.total_reps} / ${results.target_reps}</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-600">Pose Accuracy</h4>
+                    <p class="text-lg font-bold text-gray-900">${results.accuracy_score}%</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-600">Sets Completed</h4>
+                    <p class="text-lg font-bold text-gray-900">${results.total_sets} / ${results.target_sets}</p>
+                </div>
             </div>
         `;
         
         viewDetailedResults.href = `{% url "exercise_results" video_id=0 %}`.replace('0', videoId);
-        resultsModal.classList.remove('hidden');
+        showState('results');
         
         resetForm();
     }
     
     function showError(message) {
-        processingStatus.classList.add('hidden');
         errorText.textContent = message;
         errorMessage.classList.remove('hidden');
-        document.getElementById('uploadBtn').disabled = false;
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload Video!';
+        showState('upload'); // Go back to upload state
     }
     
     function resetForm() {
         uploadForm.reset();
         fileInfo.classList.add('hidden');
         errorMessage.classList.add('hidden');
-        document.getElementById('uploadBtn').disabled = false;
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload Video!';
     }
     
     function formatFileSize(bytes) {
@@ -306,6 +372,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
+
+    // Set initial state
+    showState('start');
 });
 </script>
 {% endblock %}

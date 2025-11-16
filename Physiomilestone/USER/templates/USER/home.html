@@ -1,0 +1,352 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth"> <!-- Added scroll-smooth --><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysioMilestones - Track Development Smarter</title> <!-- Improved Title --><!-- Google Font: Inter --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind --><script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // --- Configure Tailwind to use 'Inter' font ---
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- AOS Animation --><link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+            /* Font is now handled by Tailwind config */
+        }
+        .blob {
+            filter: blur(120px); /* Increased blur */
+            opacity: 0.3; /* Softened opacity */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+
+<!-- ========================================================= --><!-- NAVBAR --><!-- ========================================================= --><nav class="w-full bg-white/90 backdrop-blur-lg shadow-sm fixed top-0 left-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+        <!-- Logo --><a href="{% url 'home' %}" class="flex items-center gap-2">
+            <!-- Clean SVG Icon -->
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L14.9 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.1 8.26L12 2Z"
+                      stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            
+            
+
+            <span class="text-xl font-semibold text-gray-800">PhysioMilestones</span>
+        </a>
+
+        <!-- Desktop Menu --><div class="hidden md:flex items-center gap-6 text-gray-600 font-medium">
+            <a href="#features" class="hover:text-purple-600 transition">Features</a>
+            <a href="#how" class="hover:text-purple-600 transition">How it Works</a>
+            
+            <a href="{% url 'login' %}" 
+                class="px-5 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+                Login
+            </a>
+            <a href="{% url 'register' %}"
+                class="px-5 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/30">
+                Register
+            </a>
+        </div>
+
+        <!-- Mobile Menu Button --><button id="menuBtn" class="md:hidden focus:outline-none">
+            <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-700" fill="none" 
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Dropdown --><div id="mobileMenu" class="hidden md:hidden px-6 pb-4 border-t border-gray-200">
+        <a href="#features" class="mobile-menu-link block py-2 text-gray-700 hover:text-purple-600 transition">Features</a>
+        <a href="#how" class="mobile-menu-link block py-2 text-gray-700 hover:text-purple-600 transition">How it Works</a>
+        <a href="{% url 'login' %}" class="mobile-menu-link block py-2 text-gray-700 hover:text-purple-600 transition">
+            Login
+        </a>
+        <a href="{% url 'register' %}" class="mobile-menu-link block w-full text-center mt-2 py-3 bg-purple-600 text-white rounded-lg font-semibold">
+            Register
+        </a>
+    </div>
+</nav>
+
+<!-- Prevent navbar overlapping --><div class="h-20"></div>
+
+
+
+<!-- ========================================================= --><!-- HERO SECTION --><!-- ========================================================= --><section class="relative overflow-hidden pt-24 pb-32"> <!-- Adjusted padding --><!-- Fancy Blurred Blobs --><div class="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] rounded-full bg-purple-400 blob"></div>
+    <div class="absolute bottom-[-150px] right-[-100px] w-[500px] h-[500px] rounded-full bg-pink-400 blob"></div>
+
+    <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+
+        <h1 data-aos="fade-up" class="text-5xl md:text-7xl font-extrabold leading-tight text-gray-900">
+            Track Development
+            <!-- --- Gradient Text --- --><span class="bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">Smarter</span><br>
+            With PhysioMilestones
+        </h1>
+
+        <p data-aos="fade-up" data-aos-delay="200"
+            class="mt-6 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            A modern platform to track, analyse and visualise developmental milestones  
+            for children — built for parents and doctors.
+        </p>
+
+        <div data-aos="fade-up" data-aos-delay="400" class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{% url 'register' %}"
+                class="px-8 py-4 bg-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 hover:bg-purple-700 transition-all hover:scale-105 transform">
+                Get Started - It's Free
+            </a>
+            <a href="{% url 'login' %}"
+                class="px-8 py-4 bg-white border border-gray-300 text-gray-800 font-semibold rounded-xl shadow-sm hover:scale-105 hover:border-gray-400 transition-all transform">
+                Login
+            </a>
+        </div>
+
+        <!-- Illustration --><div data-aos="zoom-in" data-aos-delay="600" class="mt-20">
+            <!-- Replaced with a more modern, flat illustration --><img src="https://images.unsplash.com/photo-1672478637022-fc0bf4c9f3f8?q=80&w=2232&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                class="mx-auto w-full max-w-2xl rounded-2xl drop-shadow-xl border-4 border-white object-cover"
+                alt="Parent and child interacting playfully"
+                onerror="this.src='https://placehold.co/1024x768/e9d5ff/7c3aed?text=Parent+and+Child'; this.onerror=null;">
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ========================================================= --><!-- FEATURES SECTION --><!-- ========================================================= --><section id="features" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="text-center max-w-2xl mx-auto">
+            <h2 data-aos="fade-up" class="text-4xl font-bold text-gray-900">
+                Powerful Features, Modern Experience
+            </h2>
+            <p data-aos="fade-up" data-aos-delay="200"
+                class="text-lg text-gray-600 mt-4">
+                Everything you need to track growth and health in one intuitive platform.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mt-16">
+
+            <!-- Card 1 --><div data-aos="fade-up" data-aos-delay="100"
+                class="p-8 rounded-2xl bg-gray-50 transition-all hover:shadow-2xl hover:-translate-y-1 transform">
+                <!-- Icon background --><div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 8.625C9.75 8.004 10.254 7.5 10.875 7.5h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900">Visual Growth Charts</h3>
+                <p class="text-gray-600 mt-2">Understand development at a glance with beautiful, easy-to-read charts.</p>
+            </div>
+
+            <!-- Card 2 --><div data-aos="fade-up" data-aos-delay="200"
+                class="p-8 rounded-2xl bg-gray-50 transition-all hover:shadow-2xl hover:-translate-y-1 transform">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900">Smart Analysis</h3>
+                <p class="text-gray-600 mt-2">AI-driven insights help you identify patterns and potential delays early on.</p>
+            </div>
+
+            <!-- Card 3 --><div data-aos="fade-up" data-aos-delay="300"
+                class="p-8 rounded-2xl bg-gray-50 transition-all hover:shadow-2xl hover:-translate-y-1 transform">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-5">
+                    <svg class="w-6 h-6 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3-7.42c0-4.99-4.03-9-9-9S3 6.31 3 11.3c0 2.38 1.66 4.408 3.91 5.375L9 20.25h6l2.09-3.875Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900">Parent + Doctor Portal</h3>
+                <p class="text-gray-600 mt-2">A shared dashboard to collaborate seamlessly with your healthcare professional.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ========================================================= --><!-- HOW IT WORKS (New Alternating Layout) --><!-- ========================================================= --><section id="how" class="py-24 bg-gray-50 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="text-center max-w-2xl mx-auto">
+            <h2 data-aos="fade-up" class="text-4xl font-bold text-gray-900">
+                Get Started in 3 Easy Steps
+            </h2>
+            <p data-aos="fade-up" data-aos-delay="200"
+                class="text-lg text-gray-600 mt-4">
+                Tracking development has never been this simple.
+            </p>
+        </div>
+
+        <div class="mt-20 space-y-24">
+            <!-- Step 1 --><div class="grid md:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right" class="rounded-2xl shadow-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1603834305747-b0fb6f8bbfd6?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         class="w-full h-full object-cover" 
+                         alt="Illustration of signing up"
+                         onerror="this.src='https://placehold.co/600x450/e9d5ff/7c3aed?text=Step+1:+Sign+Up'; this.onerror=null;">
+                </div>
+                <div data-aos="fade-left">
+                    <span class="text-sm font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">Step 1</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mt-4">Create Your Account</h3>
+                    <p class="text-lg text-gray-600 mt-3">Register in seconds as a parent, guardian, or healthcare professional. Your secure dashboard awaits.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 --><div class="grid md:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-left" class="rounded-2xl shadow-xl overflow-hidden md:order-2">
+                    <img src="https://plus.unsplash.com/premium_photo-1661677289112-1c792fa84fe2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         class="w-full h-full object-cover" 
+                         alt="Illustration of adding data"
+                         onerror="this.src='https://placehold.co/600x450/e9d5ff/7c3aed?text=Step+2:+Log+Data'; this.onerror=null;">
+                </div>
+                <div data-aos="fade-right" class="md:order-1">
+                    <span class="text-sm font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">Step 2</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mt-4">Add Development Data</h3>
+                    <p class="text-lg text-gray-600 mt-3">Easily log milestones, measurements, and observations using our intuitive interface on any device.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 --><div class="grid md:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right" class="rounded-2xl shadow-xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                         class="w-full h-full object-cover" 
+                         alt="Illustration of monitoring progress"
+                         onerror="this.src='https://placehold.co/600x450/e9d5ff/7c3aed?text=Step+3:+See+Insights'; this.onerror=null;">
+                </div>
+                <div data-aos="fade-left">
+                    <span class="text-sm font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">Step 3</span>
+                    <h3 class="text-3xl font-bold text-gray-900 mt-4">Monitor & Share Progress</h3>
+                    <p class="text-lg text-gray-600 mt-3">Instantly see visual charts and AI-powered insights. Securely share progress with your doctor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ========================================================= --><!-- CTA SECTION (New) --><!-- ========================================================= --><section class="py-24 bg-purple-600">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 data-aos="fade-up" class="text-4xl font-bold text-white">
+            Start Tracking Milestones Today
+        </h2>
+        <p data-aos="fade-up" data-aos-delay="100" class="text-lg text-purple-200 mt-4 max-w-xl mx-auto">
+            Join thousands of parents and doctors using PhysioMilestones to support healthy development.
+        </p>
+        <div data-aos="fade-up" data-aos-delay="200" class="mt-8">
+            <a href="{% url 'register' %}"
+                class="px-10 py-4 bg-white text-purple-600 font-semibold rounded-xl shadow-lg hover:bg-gray-100 transition-all hover:scale-105 transform">
+                Sign Up for Free
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ========================================================= --><!-- FOOTER (New Professional Footer) --><!-- ========================================================= --><footer class="py-20 bg-white border-t">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+        <!-- Column 1: Logo & Copyright --><div class="flex flex-col gap-4">
+            <a href="{% url 'home' %}" class="flex items-center gap-2">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="#7C3AED" stroke-width="2"/>
+                    <path d="M8 13L11 16L17 10" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-xl font-semibold text-gray-800">PhysioMilestones</span>
+            </a>
+            <p class="text-gray-500">
+                Tracking development smarter.
+            </p>
+            <p class="text-sm text-gray-400 mt-4">
+                © 2025 PhysioMilestones. <br> All rights reserved.
+            </p>
+        </div>
+
+        <!-- Column 2: Product Links --><div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Product</h4>
+            <ul class="space-y-3">
+                <li><a href="#features" class="text-gray-600 hover:text-purple-600 transition">Features</a></li>
+                <li><a href="#how" class="text-gray-600 hover:text-purple-600 transition">How it Works</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Pricing</a></li>
+                <li><a href="{% url 'login' %}" class="text-gray-600 hover:text-purple-600 transition">Login</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Company Links --><div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Company</h4>
+            <ul class="space-y-3">
+                <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">About Us</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Careers</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 4: Legal & Social --><div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">Legal</h4>
+            <ul class="space-y-3">
+                <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Privacy Policy</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-purple-600 transition">Terms of Service</a></li>
+            </ul>
+
+            <h4 class="text-lg font-semibold text-gray-900 mb-4 mt-8">Follow Us</h4>
+            <div class="flex space-x-4">
+                <!-- Social Icon Placeholders --><a href="#" class="text-gray-500 hover:text-purple-600 transition">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.772-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12Z" clip-rule="evenodd" /></svg>
+                </a>
+                <a href="#" class="text-gray-500 hover:text-purple-600 transition">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0 0 22 5.92a8.19 8.19 0 0 1-2.357.646 4.118 4.118 0 0 0 1.804-2.27 8.224 8.224 0 0 1-2.605.996 4.107 4.107 0 0 0-6.993 3.743 11.65 11.65 0 0 1-8.457-4.287 4.106 4.106 0 0 0 1.27 5.477A4.073 4.073 0 0 1 2.8 9.71v.052a4.105 4.105 0 0 0 3.292 4.022 4.095 4.095 0 0 1-1.853.07 4.108 4.108 0 0 0 3.834 2.85A8.233 8.233 0 0 1 2 18.407a11.616 11.616 0 0 0 6.29 1.84" /></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<!-- ========================================================= --><!-- SCRIPTS --><!-- ========================================================= --><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 900, // Animation duration
+        once: true, // Only animate once
+        easing: 'ease-out-cubic', // Animation timing
+    });
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const mobileMenuLinks = document.querySelectorAll(".mobile-menu-link");
+
+    menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+    });
+
+    // --- Close mobile menu when a link is clicked ---
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+        });
+    });
+</script>
+
+</body>
+</html>

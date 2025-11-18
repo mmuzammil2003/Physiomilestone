@@ -95,7 +95,7 @@ class ExerciseValidator:
         right_wrist = self.get_landmark_coordinates(results, 'right_wrist')
         
         if not all([left_shoulder, left_elbow, left_wrist, right_shoulder, right_elbow, right_wrist]):
-            return {'reps': 0, 'confidence': 0.0, 'current_angle': 0.0}
+            return {'reps': 0, 'confidence': 0.0, 'current_angle': 0.0, 'valid_movement': False}
         
         # Calculate angles for both arms
         left_angle = self.calculate_angle(left_shoulder, left_elbow, left_wrist)
@@ -107,11 +107,15 @@ class ExerciseValidator:
         config = self.exercise_configs['arm_raise']
         confidence = 1.0 if config['min_angle'] <= avg_angle <= config['max_angle'] else 0.5
         
+        # Valid movement: arms raised (avg_angle >= min_angle)
+        valid_movement = avg_angle >= config['min_angle']
+        
         return {
             'reps': 0,  # Will be calculated in the main processing loop
             'confidence': confidence,
             'current_angle': avg_angle,
-            'is_rep_position': avg_angle >= config['angle_threshold']
+            'is_rep_position': avg_angle >= config['angle_threshold'],
+            'valid_movement': valid_movement
         }
     
     def detect_squat(self, results) -> Dict:
@@ -125,7 +129,7 @@ class ExerciseValidator:
         right_ankle = self.get_landmark_coordinates(results, 'right_ankle')
         
         if not all([left_hip, left_knee, left_ankle, right_hip, right_knee, right_ankle]):
-            return {'reps': 0, 'confidence': 0.0, 'current_angle': 0.0}
+            return {'reps': 0, 'confidence': 0.0, 'current_angle': 0.0, 'valid_movement': False}
         
         # Calculate angles for both legs
         left_angle = self.calculate_angle(left_hip, left_knee, left_ankle)
@@ -137,11 +141,15 @@ class ExerciseValidator:
         config = self.exercise_configs['squat']
         confidence = 1.0 if config['min_angle'] <= avg_angle <= config['max_angle'] else 0.5
         
+        # Valid movement: legs bent (avg_angle <= 160)
+        valid_movement = avg_angle <= 160
+        
         return {
             'reps': 0,
             'confidence': confidence,
             'current_angle': avg_angle,
-            'is_rep_position': avg_angle <= config['angle_threshold']
+            'is_rep_position': avg_angle <= config['angle_threshold'],
+            'valid_movement': valid_movement
         }
     
     def detect_jumping_jack(self, results) -> Dict:
@@ -166,7 +174,7 @@ class ExerciseValidator:
         
         if not all([left_shoulder, left_elbow, left_wrist, right_shoulder, right_elbow, right_wrist,
                    left_hip, left_knee, left_ankle, right_hip, right_knee, right_ankle]):
-            return {'reps': 0, 'confidence': 0.0, 'arm_angle': 0.0, 'leg_angle': 0.0}
+            return {'reps': 0, 'confidence': 0.0, 'arm_angle': 0.0, 'leg_angle': 0.0, 'valid_movement': False}
         
         # Calculate angles
         left_arm_angle = self.calculate_angle(left_shoulder, left_elbow, left_wrist)
@@ -185,12 +193,16 @@ class ExerciseValidator:
         
         confidence = 1.0 if (arms_up and legs_spread) else 0.5
         
+        # Valid movement: arms raised OR legs spread (avg_arm_angle >= min_arm_angle OR avg_leg_angle >= min_leg_angle)
+        valid_movement = (avg_arm_angle >= config['min_arm_angle']) or (avg_leg_angle >= config['min_leg_angle'])
+        
         return {
             'reps': 0,
             'confidence': confidence,
             'arm_angle': avg_arm_angle,
             'leg_angle': avg_leg_angle,
-            'is_rep_position': arms_up and legs_spread
+            'is_rep_position': arms_up and legs_spread,
+            'valid_movement': valid_movement
         }
     
     def count_repetitions(self, exercise_type: str, detection_results: List[Dict]) -> Dict:
@@ -260,13 +272,27 @@ class ExerciseValidator:
                     elif exercise_type == 'jumping_jack':
                         result = self.detect_jumping_jack(results)
                     else:
-                        result = {'reps': 0, 'confidence': 0.0}
+                        result = {'reps': 0, 'confidence': 0.0, 'valid_movement': False}
                     
                     detection_results.append(result)
                 
                 frame_count += 1
             
             cap.release()
+            
+            # Check if video contains valid movements for the assigned exercise
+            valid_movements = [res.get("valid_movement", False) for res in detection_results]
+            
+            if not any(valid_movements):
+                return {
+                    "exercise_type": exercise_type,
+                    "success": False,
+                    "error": "Exercise mismatch: The uploaded video does not match the assigned exercise.",
+                    "frames_processed": len(detection_results),
+                    "total_reps": 0,
+                    "sets": 0,
+                    "accuracy": 0.0
+                }
             
             # Count repetitions
             rep_results = self.count_repetitions(exercise_type, detection_results)
